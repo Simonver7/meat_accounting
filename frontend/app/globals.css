@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+/* Тёмная тема + оранжевый акцент */
+:root {
+  --bg: #121212;
+  --card: #1e1e1e;
+  --accent: #f97316;
+  --text: #ffffff;
+  --muted: #a1a1a1;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.btn {
+  background: var(--accent);
+  color: #121212;
+  font-weight: 700;
+  border-radius: 12px;
+  padding: 14px;
+  width: 100%;
+  text-align: center;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.big {
+  font-size: 32px;
+  font-weight: 800;
+}
