@@ -454,16 +454,7 @@ function setupNewOperationButton() {
    Navigation
 -------------------------------------------------- */
 
-function setupNavigation() {
-    // История открывается обычной ссылкой, перехват не нужен.
-    const reportsLink = document.getElementById("reports-link");
 
-    reportsLink?.addEventListener("click", (event) => {
-        event.preventDefault();
-
-        showToast("Раздел «Отчёты» пока не подключён");
-    });
-}
 
 /* --------------------------------------------------
    Init

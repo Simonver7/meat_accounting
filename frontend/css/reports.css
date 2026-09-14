@@ -1,0 +1,577 @@
+/* =========================================================
+   REPORTS
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+:root {
+    --bg: #121212;
+    --surface: #1e1e1e;
+    --surface-light: #242424;
+
+    --text: #ffffff;
+    --secondary: #a1a1a1;
+
+    --orange: #f97316;
+    --orange-hover: #fb923c;
+
+    --border: rgba(255, 255, 255, 0.07);
+
+    --danger: #ef4444;
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+
+    background: var(--bg);
+    color: var(--text);
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+}
+
+
+body {
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.reports-page {
+    position: relative;
+
+    width: 100%;
+    max-width: 390px;
+    min-height: 100vh;
+
+    margin: 0 auto;
+
+    background: var(--bg);
+
+    padding-bottom: 90px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.reports-header {
+    display: flex;
+    align-items: center;
+
+    min-height: 88px;
+
+    padding: 20px 16px 14px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+.header-left {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.back-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+
+    border: 0;
+    border-radius: 10px;
+
+    background: var(--surface);
+
+    color: var(--text);
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease;
+}
+
+
+.back-button:hover {
+    background: var(--surface-light);
+}
+
+
+.back-button:active {
+    transform: scale(0.94);
+}
+
+
+.reports-header h1 {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 700;
+}
+
+
+.reports-header p {
+    margin-top: 3px;
+
+    color: var(--secondary);
+
+    font-size: 13px;
+    line-height: 18px;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.reports-content {
+    padding: 20px 16px 24px;
+}
+
+
+/* =========================================================
+   REPORT CARD
+========================================================= */
+
+.report-card {
+    width: 100%;
+
+    padding: 20px;
+
+    border-radius: 16px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+}
+
+
+.report-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 18px;
+}
+
+
+.report-title-row h2 {
+    font-size: 16px;
+    line-height: 20px;
+
+    font-weight: 700;
+}
+
+
+.report-title-row p {
+    margin-top: 4px;
+
+    color: var(--secondary);
+
+    font-size: 12px;
+    line-height: 16px;
+}
+
+
+.report-status {
+    flex-shrink: 0;
+
+    color: var(--secondary);
+
+    font-size: 11px;
+    line-height: 16px;
+}
+
+
+/* =========================================================
+   ROW
+========================================================= */
+
+.report-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-height: 48px;
+
+    border-top: 1px solid var(--border);
+}
+
+
+.report-label {
+    color: var(--secondary);
+
+    font-size: 14px;
+    line-height: 20px;
+
+    font-weight: 400;
+}
+
+
+.report-value {
+    color: var(--text);
+
+    font-size: 14px;
+    line-height: 20px;
+
+    font-weight: 700;
+
+    text-align: right;
+}
+
+
+.report-value.expense {
+    color: var(--text);
+}
+
+
+.report-value.total {
+    color: var(--orange);
+}
+
+
+.report-row-total {
+    margin-top: 4px;
+
+    min-height: 56px;
+
+    border-top-color:
+        rgba(249, 115, 22, 0.25);
+}
+
+
+/* =========================================================
+   EXCEL BUTTON
+========================================================= */
+
+.excel-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    width: 100%;
+    height: 48px;
+
+    margin-top: 16px;
+
+    border: 0;
+    border-radius: 12px;
+
+    background: var(--surface);
+
+    color: var(--orange);
+
+    font-family: inherit;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+
+.excel-button:hover {
+    background: var(--surface-light);
+}
+
+
+.excel-button:active {
+    transform: scale(0.98);
+}
+
+
+.excel-button:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+}
+
+
+.excel-icon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+
+/* =========================================================
+   LAST UPDATE
+========================================================= */
+
+.last-update {
+    margin-top: 12px;
+
+    color: var(--secondary);
+
+    font-size: 11px;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.report-error {
+    margin-bottom: 16px;
+
+    padding: 16px;
+
+    border: 1px solid
+        rgba(239, 68, 68, 0.25);
+
+    border-radius: 12px;
+
+    background:
+        rgba(239, 68, 68, 0.08);
+}
+
+
+.error-title {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+.error-message {
+    margin-top: 6px;
+
+    color: var(--secondary);
+
+    font-size: 12px;
+    line-height: 18px;
+}
+
+
+.retry-button {
+    margin-top: 12px;
+
+    padding: 8px 14px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: var(--orange);
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   BOTTOM NAVIGATION
+========================================================= */
+
+.bottom-navigation {
+    position: fixed;
+
+    bottom: 0;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    width: 100%;
+    max-width: 390px;
+
+    height: 64px;
+
+    background: var(--surface);
+
+    border-top: 1px solid var(--border);
+
+    padding:
+        6px 12px
+        env(safe-area-inset-bottom, 6px);
+}
+
+
+.nav-item {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 33.333%;
+
+    height: 52px;
+
+    gap: 3px;
+
+    color: var(--secondary);
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    transition:
+        color 0.15s ease;
+}
+
+
+.nav-item:hover {
+    color: var(--text);
+}
+
+
+.nav-item.active {
+    color: var(--orange);
+}
+
+
+.nav-icon {
+    font-size: 17px;
+    line-height: 18px;
+}
+
+
+.active-dot {
+    position: absolute;
+
+    bottom: 2px;
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: var(--orange);
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+    position: fixed;
+
+    left: 50%;
+    bottom: 82px;
+
+    z-index: 200;
+
+    transform:
+        translate(-50%, 20px);
+
+    width: calc(100% - 32px);
+    max-width: 358px;
+
+    padding: 12px 16px;
+
+    border-radius: 10px;
+
+    background: #292929;
+
+    color: var(--text);
+
+    font-size: 13px;
+    line-height: 18px;
+
+    text-align: center;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.toast.visible {
+    transform:
+        translate(-50%, 0);
+
+    opacity: 1;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 390px) {
+
+    .reports-page {
+        max-width: none;
+    }
+
+    .bottom-navigation {
+        max-width: none;
+    }
+}
+
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media (min-width: 700px) {
+
+    body {
+        display: flex;
+        justify-content: center;
+    }
+
+    .reports-page {
+        min-height: 844px;
+    }
+
+    .bottom-navigation {
+        position: fixed;
+        width: 390px;
+    }
+}
