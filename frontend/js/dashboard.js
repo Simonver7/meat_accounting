@@ -455,14 +455,8 @@ function setupNewOperationButton() {
 -------------------------------------------------- */
 
 function setupNavigation() {
-    const historyLink = document.getElementById("history-link");
+    // История открывается обычной ссылкой, перехват не нужен.
     const reportsLink = document.getElementById("reports-link");
-
-    historyLink?.addEventListener("click", (event) => {
-        event.preventDefault();
-
-        showToast("Раздел «История» пока не подключён");
-    });
 
     reportsLink?.addEventListener("click", (event) => {
         event.preventDefault();

@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function getToken() {
         return (
+            localStorage.getItem("meat_accounting_access_token") ||
             localStorage.getItem("access_token") ||
             sessionStorage.getItem("access_token") ||
             localStorage.getItem("token") ||
