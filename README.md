@@ -60,6 +60,18 @@ python3 -m venv ../venv && ../venv/bin/pip install -r requirements.txt
 ../venv/bin/uvicorn app.main:app --reload --port 8000
 ```
 
+## Бэкапы
+
+Еженедельно (понедельник 02:00) `scripts/backup.ps1` делает `pg_dump` (custom,
+сжатие 9) через контейнер `meat_db`, копирует дамп в `C:\backups\meat`, хранит
+60 дней, старые удаляет; лог — `backup.log` рядом. Задача Планировщика:
+`MeatAccounting_WeeklyBackup`. Вся документация — в `docs/backups/`
+(просмотр бэкапов, восстановление, выкладка на сервер, проблемы). Восстановление:
+
+```bash
+docker exec -i meat_db pg_restore -U meat -d meat --clean --if-exists < meat_<дата>.dump
+```
+
 Тесты (нужна БД `meat_test` на том же Postgres):
 
 ```bash
