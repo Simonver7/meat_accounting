@@ -1,7 +1,8 @@
-from datetime import date
+from datetime import date, timedelta
+from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import func, select
+from sqlalchemy import delete, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_user, get_db
@@ -16,6 +17,9 @@ from app.schemas.operation import (
     OperationPatch,
 )
 from app.services import operation_service
+from app.services import stock_service
+from app.utils.dates import today
+from app.utils.enums import MeatType
 
 router = APIRouter(prefix="/api/v1/operations", tags=["operations"])
 
@@ -62,9 +66,79 @@ async def history(
         q = q.where(Operation.status == status)
     total = await db.scalar(select(func.count()).select_from(q.subquery())) or 0
     rows = (
-        await db.execute(q.order_by(Operation.id.desc()).limit(limit).offset(offset))
-    ).scalars()
-    return OperationListOut(items=list(rows), total=total)
+        await db.execute(
+            q.add_columns(User.display_name, User.username)
+            .join(User, User.id == Operation.created_by)
+            .order_by(Operation.id.desc())
+            .limit(limit)
+            .offset(offset)
+        )
+    ).all()
+    items = [
+        OperationOut.model_validate(operation).model_copy(
+            update={"created_by_name": display_name or username}
+        )
+        for operation, display_name, username in rows
+    ]
+    return OperationListOut(items=items, total=total)
+
+
+@router.delete("/history")
+async def clear_history(
+    period: Literal["day", "last_month", "all"] = Query(),
+    operation_date: date | None = None,
+    db: AsyncSession = Depends(get_db),
+    _: User = Depends(get_current_user),
+) -> dict[str, int | str | None]:
+    """Безвозвратно удалить операции за день, прошлый месяц или за всё время."""
+    if period == "day":
+        if operation_date is None:
+            raise HTTPException(
+                status_code=400,
+                detail="Для очистки за день укажите operation_date",
+            )
+        frm = operation_date
+        to_excl = frm + timedelta(days=1)
+    elif period == "last_month":
+        this_month = today().replace(day=1)
+        to_excl = this_month
+        frm = (this_month - timedelta(days=1)).replace(day=1)
+    else:
+        frm = None
+        to_excl = None
+
+    # Coordinate deletion with operation creation/updates that affect stock.
+    for meat in sorted(meat.value for meat in MeatType):
+        await stock_service.lock_meat(db, meat)
+
+    statement = select(Operation.id)
+    if frm is not None and to_excl is not None:
+        statement = statement.where(
+            Operation.operation_date >= frm,
+            Operation.operation_date < to_excl,
+        )
+
+    operation_ids = statement.subquery()
+    if await db.scalar(select(func.count()).select_from(operation_ids)):
+        await db.execute(
+            delete(OperationChange).where(
+                OperationChange.operation_id.in_(select(operation_ids.c.id))
+            )
+        )
+        deleted = await db.execute(
+            delete(Operation).where(Operation.id.in_(select(operation_ids.c.id)))
+        )
+        deleted_count = deleted.rowcount or 0
+    else:
+        deleted_count = 0
+
+    await db.commit()
+    return {
+        "deleted_count": deleted_count,
+        "period": period,
+        "date_from": frm.isoformat() if frm else None,
+        "date_to": (to_excl - timedelta(days=1)).isoformat() if to_excl else None,
+    }
 
 
 @router.get("/{op_id}", response_model=OperationOut)

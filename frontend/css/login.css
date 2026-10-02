@@ -293,6 +293,20 @@ h1 {
     text-align: center;
 }
 
+@media (min-width: 768px) {
+    .login-card {
+        max-width: 420px;
+        padding: 36px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 18px;
+        background: #1c1c1c;
+    }
+
+    .login-form {
+        margin-top: 32px;
+    }
+}
+
 /* =========================
    Mobile
    ========================= */
@@ -329,4 +343,3 @@ h1 {
         transition-duration: 0.01ms !important;
     }
 }
-

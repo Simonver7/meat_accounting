@@ -82,11 +82,131 @@ a {
     margin-bottom: 18px;
 }
 
+.history-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
 .history-header h1 {
     font-size: 20px;
     line-height: 24px;
     font-weight: 700;
     color: var(--text);
+}
+
+.clear-history-button {
+    flex: 0 0 auto;
+    min-height: 36px;
+    padding: 0 12px;
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    border-radius: 9px;
+    background: rgba(239, 68, 68, 0.12);
+    color: #fca5a5;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.clear-history-button:hover {
+    background: rgba(239, 68, 68, 0.2);
+}
+
+.clear-history-dialog {
+    width: min(430px, calc(100% - 32px));
+    max-width: 430px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--card);
+    color: var(--text);
+}
+
+.clear-history-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.72);
+}
+
+.clear-history-form {
+    position: relative;
+    display: grid;
+    gap: 12px;
+    padding: 22px;
+}
+
+.clear-history-form h2 {
+    padding-right: 28px;
+    font-size: 19px;
+}
+
+.dialog-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.clear-history-warning {
+    color: #fca5a5;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.clear-history-field {
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.clear-history-select {
+    width: 100%;
+    min-height: 42px;
+    padding: 9px 11px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #121212;
+    color: var(--text);
+    font: inherit;
+}
+
+.clear-history-error {
+    min-height: 18px;
+    color: #fca5a5;
+    font-size: 13px;
+}
+
+.clear-history-actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.clear-history-actions button {
+    min-height: 40px;
+    padding: 0 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancel-clear-button {
+    background: #303030;
+    color: var(--text);
+}
+
+.confirm-clear-button {
+    background: var(--danger);
+    color: #fff;
+}
+
+.clear-history-actions button:disabled {
+    opacity: 0.6;
+    cursor: wait;
 }
 
 .history-subtitle {
@@ -425,12 +545,65 @@ a {
 
 @media (min-width: 600px) {
     .history-page {
-        max-width: 600px;
-        padding-left: 20px;
-        padding-right: 20px;
+        max-width: 760px;
+        padding: 32px 28px 100px;
     }
 
     .bottom-nav {
-        max-width: 600px;
+        max-width: 760px;
+    }
+}
+
+@media (min-width: 900px) {
+    .history-page,
+    .bottom-nav {
+        max-width: 1040px;
+    }
+
+    .history-page {
+        padding: 40px 40px 110px;
+    }
+
+    .history-heading h1,
+    .history-header h1 {
+        font-size: 28px;
+        line-height: 34px;
+    }
+
+    .history-subtitle {
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .filters {
+        gap: 12px;
+        margin-bottom: 28px;
+    }
+
+    .filter-button {
+        height: 40px;
+        padding: 0 20px;
+        font-size: 14px;
+    }
+
+    .operation-card {
+        min-height: 78px;
+        padding: 16px 20px;
+    }
+
+    .operation-title {
+        font-size: 16px;
+        line-height: 22px;
+    }
+
+    .operation-meta,
+    .operation-status {
+        font-size: 13px;
+        line-height: 18px;
+    }
+
+    .operation-amount {
+        font-size: 18px;
+        line-height: 24px;
     }
 }

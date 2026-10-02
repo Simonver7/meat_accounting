@@ -559,19 +559,70 @@ body {
    DESKTOP
 ========================================================= */
 
-@media (min-width: 700px) {
-
+@media (min-width: 768px) {
     body {
         display: flex;
         justify-content: center;
     }
 
-    .reports-page {
-        min-height: 844px;
+    .reports-page,
+    .bottom-navigation {
+        max-width: 1000px;
     }
 
-    .bottom-navigation {
-        position: fixed;
-        width: 390px;
+    .reports-header {
+        min-height: 112px;
+        padding: 28px 40px 20px;
+    }
+
+    .reports-header h1 {
+        font-size: 28px;
+        line-height: 34px;
+    }
+
+    .reports-header p {
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .reports-content {
+        max-width: 840px;
+        margin: 0 auto;
+        padding: 36px 40px 32px;
+    }
+
+    .report-card,
+    .excel-button {
+        max-width: 760px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .report-card {
+        padding: 28px 32px;
+    }
+
+    .report-title-row h2 {
+        font-size: 20px;
+        line-height: 26px;
+    }
+
+    .report-title-row p,
+    .report-label,
+    .report-value {
+        font-size: 15px;
+    }
+
+    .report-row {
+        min-height: 58px;
+    }
+
+    .report-row-total {
+        min-height: 66px;
+    }
+
+    .excel-button {
+        width: 100%;
+        height: 54px;
     }
 }

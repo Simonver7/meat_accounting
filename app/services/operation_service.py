@@ -33,8 +33,8 @@ async def create_operation(
     db: AsyncSession, data: OperationCreate, user_id: int
 ) -> Operation:
     """Создание с проверкой остатка в одной транзакции."""
+    await stock_service.lock_meat(db, data.meat_type.value)
     if data.type in EXPENSE_TYPES:
-        await stock_service.lock_meat(db, data.meat_type.value)
         stock = await stock_service.get_stock_for(db, data.meat_type)
         if stock < data.quantity:
             raise InsufficientStockError(str(stock))
@@ -123,11 +123,11 @@ async def cancel_operation(db: AsyncSession, op_id: int, user_id: int) -> Operat
         raise HTTPException(status_code=404, detail="Операция не найдена")
     if op.status == OperationStatus.CANCELLED.value:
         raise AlreadyCancelledError
+    await stock_service.lock_meat(db, op.meat_type)
     old = snapshot(op)
 
     if op.type not in {t.value for t in EXPENSE_TYPES}:
         # Убираем приход — склад не должен уйти в минус
-        await stock_service.lock_meat(db, op.meat_type)
         stock = await stock_service.get_stock_for(db, op.meat_type)
         if stock < Decimal(op.quantity):
             raise InsufficientStockError(str(stock))

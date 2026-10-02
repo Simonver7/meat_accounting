@@ -50,6 +50,12 @@ async def login_page() -> FileResponse:
 async def dashboard_page() -> FileResponse:
     return FileResponse(FRONTEND_DIR / "dashboard.html")
 
+
+@app.get("/profile", include_in_schema=False)
+async def profile_page() -> FileResponse:
+    return FileResponse(FRONTEND_DIR / "profile.html")
+
+
 @app.get("/new-operation", include_in_schema=False)
 async def new_operation_page() -> FileResponse:
     return FileResponse(FRONTEND_DIR / "new_operation.html")
@@ -63,6 +69,11 @@ async def history_page() -> FileResponse:
 @app.get("/dashboard")
 async def dashboard_page():
     return FileResponse(FRONTEND_DIR / "dashboard.html")
+
+
+@app.get("/reports", include_in_schema=False)
+async def reports_page() -> FileResponse:
+    return FileResponse(FRONTEND_DIR / "reports.html")
 
 
 @app.get("/api/v1/health")

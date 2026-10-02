@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.operation import Operation
 from app.models.operation_change import OperationChange
+from app.models.user import User
 from app.schemas.report import ReportOut
 
 
@@ -25,6 +26,8 @@ async def build_excel(
 
     ws = wb.active
     ws.title = "Сводка"
+    ws.append(["Период", f"{frm.isoformat()} — {report.date_to.isoformat()}"])
+    ws.append([])
     _fill_sheet(
         ws,
         [
@@ -54,11 +57,12 @@ async def build_excel(
 
     ops = (
         await db.execute(
-            select(Operation)
+            select(Operation, User.display_name, User.username)
+            .join(User, User.id == Operation.created_by)
             .where(Operation.operation_date >= frm, Operation.operation_date < to_excl)
             .order_by(Operation.id)
         )
-    ).scalars()
+    ).all()
     ws2 = wb.create_sheet("Операции")
     _fill_sheet(
         ws2,
@@ -72,18 +76,21 @@ async def build_excel(
                 float(o.quantity),
                 o.franchise_id,
                 o.status,
-                o.created_by,
+                display_name or username,
                 o.comment,
             ]
-            for o in ops
+            for o, display_name, username in ops
         ],
     )
 
     changes = (
         await db.execute(
-            select(OperationChange).order_by(OperationChange.id).limit(5000)
+            select(OperationChange, User.display_name, User.username)
+            .join(User, User.id == OperationChange.changed_by)
+            .order_by(OperationChange.id)
+            .limit(5000)
         )
-    ).scalars()
+    ).all()
     ws3 = wb.create_sheet("История изменений")
     _fill_sheet(
         ws3,
@@ -92,12 +99,12 @@ async def build_excel(
             [
                 c.id,
                 c.operation_id,
-                c.changed_by,
+                display_name or username,
                 c.changed_at.isoformat(),
                 str(c.old_data),
                 str(c.new_data),
             ]
-            for c in changes
+            for c, display_name, username in changes
         ],
     )
 

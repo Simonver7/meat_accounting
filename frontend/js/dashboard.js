@@ -482,5 +482,4 @@ async function initDashboard() {
 }
 
 setupNewOperationButton();
-setupNavigation();
 initDashboard();

@@ -14,6 +14,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const retryButton =
         document.getElementById("retry-button");
 
+    const clearHistoryButton =
+        document.getElementById("clear-history-button");
+
+    const clearHistoryDialog =
+        document.getElementById("clear-history-dialog");
+
+    const clearPeriod =
+        document.getElementById("clear-period");
+
+    const clearDate =
+        document.getElementById("clear-date");
+
+    const clearDateLabel =
+        document.getElementById("clear-date-label");
+
+    const clearHistoryError =
+        document.getElementById("clear-history-error");
+
+    const confirmClearHistoryButton =
+        document.getElementById("confirm-clear-history");
+
     const filterButtons =
         document.querySelectorAll("[data-filter]");
 
@@ -21,6 +42,110 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let operations = [];
 
+    function updateClearDateVisibility() {
+        const requiresDate = clearPeriod.value === "day";
+        clearDate.hidden = !requiresDate;
+        clearDateLabel.hidden = !requiresDate;
+        clearDate.required = requiresDate;
+    }
+
+    clearHistoryButton?.addEventListener("click", () => {
+        clearHistoryError.textContent = "";
+        const now = new Date();
+        clearDate.value = [
+            now.getFullYear(),
+            String(now.getMonth() + 1).padStart(2, "0"),
+            String(now.getDate()).padStart(2, "0"),
+        ].join("-");
+        updateClearDateVisibility();
+        clearHistoryDialog.showModal();
+    });
+
+    clearPeriod?.addEventListener("change", updateClearDateVisibility);
+    document.getElementById("close-clear-dialog")?.addEventListener("click", () => {
+        clearHistoryDialog.close();
+    });
+    document.getElementById("cancel-clear-history")?.addEventListener("click", () => {
+        clearHistoryDialog.close();
+    });
+
+    confirmClearHistoryButton?.addEventListener("click", async () => {
+        clearHistoryError.textContent = "";
+
+        if (clearPeriod.value === "day" && !clearDate.value) {
+            clearHistoryError.textContent = "Выберите дату.";
+            return;
+        }
+
+        const labels = {
+            day: `день ${clearDate.value}`,
+            last_month: "прошлый месяц",
+            all: "всё время",
+        };
+
+        if (!window.confirm(
+            `Безвозвратно удалить операции за ${labels[clearPeriod.value]}? ` +
+            "Это изменит остатки и отчёты. Действие нельзя отменить."
+        )) {
+            return;
+        }
+
+        confirmClearHistoryButton.disabled = true;
+        confirmClearHistoryButton.textContent = "Удаление...";
+
+        try {
+            const token = getToken();
+            if (!token) {
+                window.location.href = "/";
+                return;
+            }
+            const params = new URLSearchParams({
+                period: clearPeriod.value,
+            });
+            if (clearPeriod.value === "day") {
+                params.set("operation_date", clearDate.value);
+            }
+
+            const response = await fetch(
+                `/api/v1/operations/history?${params.toString()}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        Accept: "application/json",
+                    },
+                }
+            );
+
+            const result = await response.json().catch(() => null);
+            if (response.status === 401) {
+                localStorage.removeItem("meat_accounting_access_token");
+                localStorage.removeItem("access_token");
+                sessionStorage.removeItem("access_token");
+                localStorage.removeItem("token");
+                sessionStorage.removeItem("token");
+                window.location.href = "/";
+                return;
+            }
+            if (!response.ok) {
+                throw new Error(result?.detail || "Не удалось очистить историю.");
+            }
+
+            clearHistoryDialog.close();
+            currentFilter = "all";
+            filterButtons.forEach((button) => {
+                button.classList.toggle("active", button.dataset.filter === "all");
+            });
+            await loadHistory();
+            window.alert(`Удалено записей: ${result.deleted_count}.`);
+        } catch (error) {
+            console.error("Ошибка очистки истории:", error);
+            clearHistoryError.textContent = error.message;
+        } finally {
+            confirmClearHistoryButton.disabled = false;
+            confirmClearHistoryButton.textContent = "Удалить безвозвратно";
+        }
+    });
 
     // =========================================================
     // TOKEN
@@ -561,6 +686,10 @@ document.addEventListener("DOMContentLoaded", () => {
     function getUserName(
         operation
     ) {
+        if (operation.created_by_name) {
+            return operation.created_by_name;
+        }
+
         if (
             operation.user &&
             operation.user.username

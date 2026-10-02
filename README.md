@@ -25,8 +25,10 @@
 | GET | `/api/v1/health` | Проверка API и связи с БД |
 | POST | `/api/v1/auth/login` | Вход `{username, password}` → `access_token` (24ч) |
 | GET | `/api/v1/auth/me` | Текущий пользователь |
+| PATCH | `/api/v1/auth/profile` | Изменение имени, логина и/или пароля (требует текущий пароль) |
 | POST | `/api/v1/operations` | Новая операция (201) |
 | GET | `/api/v1/operations` | История: `date_from/date_to/type/meat_type/user_id/franchise_id/status`, `limit/offset` |
+| DELETE | `/api/v1/operations/history?period=day&operation_date=YYYY-MM-DD` | Безвозвратно удалить операции за день (`period=last_month` или `period=all`); связанный аудит удаляется |
 | GET | `/api/v1/operations/{id}` | Одна операция |
 | PATCH | `/api/v1/operations/{id}` | Правка (всё кроме `status`) + аудит |
 | POST | `/api/v1/operations/{id}/cancel` | Отмена (`CANCELLED`) + аудит |

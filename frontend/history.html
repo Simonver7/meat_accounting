@@ -13,9 +13,9 @@
 
     <link
         rel="stylesheet"
-        href="/static/css/history.css"
+        href="/static/css/history.css?v=desktop-layout"
     >
-    <script src="/static/js/history.js" defer></script>
+    <script src="/static/js/history.js?v=4" defer></script>
 </head>
 
 <body>
@@ -26,12 +26,51 @@
 
         <!-- Header -->
         <header class="history-header">
-            <h1>История</h1>
-
-            <p class="history-subtitle">
-                Все операции
-            </p>
+            <div class="history-heading">
+                <div>
+                    <h1>История</h1>
+                    <p class="history-subtitle">
+                        Все операции
+                    </p>
+                </div>
+                <button type="button" class="clear-history-button" id="clear-history-button">
+                    Очистить
+                </button>
+            </div>
         </header>
+
+        <dialog class="clear-history-dialog" id="clear-history-dialog">
+            <form method="dialog" class="clear-history-form" id="clear-history-form">
+                <button type="button" class="dialog-close" id="close-clear-dialog" aria-label="Закрыть">×</button>
+                <h2>Очистить историю</h2>
+                <p class="clear-history-warning">
+                    Удаление необратимо. Операции и связанный аудит будут удалены из базы,
+                    остатки и отчёты пересчитаются.
+                </p>
+
+                <label class="clear-history-field" for="clear-period">Что очистить</label>
+                <select id="clear-period" class="clear-history-select">
+                    <option value="day">За выбранный день</option>
+                    <option value="last_month">За прошлый месяц</option>
+                    <option value="all">За всё время</option>
+                </select>
+
+                <label class="clear-history-field" id="clear-date-label" for="clear-date">
+                    Дата
+                </label>
+                <input class="clear-history-select" type="date" id="clear-date" required>
+
+                <p class="clear-history-error" id="clear-history-error" role="alert"></p>
+                <div class="clear-history-actions">
+                    <button type="button" class="cancel-clear-button" id="cancel-clear-history">
+                        Отмена
+                    </button>
+                    <button type="button" class="confirm-clear-button" id="confirm-clear-history">
+                        Удалить безвозвратно
+                    </button>
+                </div>
+            </form>
+        </dialog>
 
 
         <!-- Filters -->
@@ -237,8 +276,6 @@
 
 </div>
 
-
-<script src="/static/js/history.js" defer></script>
 
 </body>
 </html>

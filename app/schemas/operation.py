@@ -38,6 +38,7 @@ class OperationOut(BaseModel):
     status: str
     operation_date: date
     created_by: int
+    created_by_name: str | None = None
     created_at: datetime
     updated_at: datetime
 

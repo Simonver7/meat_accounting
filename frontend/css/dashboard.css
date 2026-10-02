@@ -98,6 +98,27 @@ a {
     margin-bottom: 28px;
 }
 
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.profile-link {
+    flex: 0 0 auto;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-button);
+    background: var(--surface);
+    color: var(--white);
+    font-size: 13px;
+}
+
+.profile-link:hover {
+    background: var(--surface-hover);
+}
+
 .title {
     margin: 0;
 
@@ -435,6 +456,88 @@ a {
 @keyframes spin {
     to {
         transform: rotate(360deg);
+    }
+}
+
+@media (min-width: 768px) {
+    :root {
+        --content-width: 1120px;
+    }
+
+    .dashboard {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-content: start;
+        gap: 24px;
+        padding: 48px 40px 120px;
+    }
+
+    .header {
+        grid-column: 1 / -1;
+        margin-bottom: 4px;
+    }
+
+    .title {
+        font-size: 28px;
+        line-height: 34px;
+    }
+
+    .date {
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .stock-grid {
+        grid-column: 1 / -1;
+        gap: 24px;
+        margin-bottom: 0;
+    }
+
+    .stock-card {
+        min-height: 168px;
+        padding: 24px;
+    }
+
+    .stock-label {
+        font-size: 14px;
+    }
+
+    .stock-value {
+        font-size: 42px;
+        line-height: 48px;
+    }
+
+    .new-operation {
+        align-self: start;
+        min-height: 64px;
+        margin: 0;
+    }
+
+    .today-section {
+        grid-column: 2;
+        grid-row: 3;
+    }
+
+    .section-title {
+        font-size: 20px;
+        line-height: 26px;
+    }
+
+    .today-card {
+        padding: 22px 24px;
+    }
+
+    .operation-row {
+        min-height: 40px;
+    }
+
+    .operation-name,
+    .operation-value {
+        font-size: 16px;
+    }
+
+    .bottom-nav {
+        max-width: var(--content-width);
     }
 }
 
