@@ -6,6 +6,10 @@ from sqlalchemy import pool, create_engine
 
 from alembic import context
 
+# Загружаем .env для alembic
+from dotenv import load_dotenv
+load_dotenv()
+
 # Путь к пакету app
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
