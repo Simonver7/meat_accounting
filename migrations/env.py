@@ -22,10 +22,17 @@ if config.config_file_name is not None:
 # Метаданные всех моделей
 target_metadata = Base.metadata
 
-# Sync URL для миграций (перекрывается env)
-SYNC_URL = os.getenv(
-    "DATABASE_SYNC_URL", "postgresql+psycopg2://meat:meat@localhost:5434/meat"
-)
+# Sync URL для миграций — из DATABASE_URL с заменой драйвера
+def get_sync_url() -> str:
+    """Преобразует async URL в sync для alembic."""
+    async_url = os.getenv("DATABASE_URL")
+    if not async_url:
+        raise RuntimeError("DATABASE_URL не задан в окружении")
+    # asyncpg -> psycopg2
+    return async_url.replace("postgresql+asyncpg://", "postgresql+psycopg2://")
+
+
+SYNC_URL = get_sync_url()
 
 
 def run_migrations_offline() -> None:
