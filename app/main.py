@@ -63,10 +63,11 @@ FRONTEND_PUBLIC_DIR = BASE_DIR / "frontend" / "public"
 app = FastAPI(title="Meat accounting", debug=settings.debug)
 
 # CORS
-if settings.allowed_origins:
+cors_origins = settings.cors_origins
+if cors_origins:
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.allowed_origins,
+        allow_origins=cors_origins,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
